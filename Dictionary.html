@@ -38,7 +38,7 @@
 			<div class="col-lg-8">
 				<form class="form-group">
 					<input ng-model="search" type="text" ng-change="validateInput()" class="form-control form-group" name="searchbar" placeholder="What do you want to search today?">
-					<button ng-disabled="!validFlag" class="btn btn-lg btn-success form-group">Search</button>
+					<button ng-disabled="!validFlag" ng-click="searchApi()" class="btn btn-lg btn-success form-group">Search</button>
 				</form>
 			</div>
 			<div class="col-lg-2"></div>
