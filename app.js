@@ -30,13 +30,17 @@
 
 		console.log("SearchAPI was called");
 
+		var merriamURL = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/'+$scope.search+'?key=1743f7d3-3c20-426e-9b9a-d27c25c0806d';
+		var pearsonURL = 'https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword='+$scope.search+'&apikey=4W4QfkL0w0RDEkQyEQo2GBIEJnwGeGiZ';
+
 		$http({
 			method: 'GET',
-			url: 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/'+$scope.search+'?key=1743f7d3-3c20-426e-9b9a-d27c25c0806d',
-		}).
-		success(function(response){
+			url: pearsonURL,
+		})
+		.success(function(response){
 			$scope.data = response.data;
-			console.log("Data received successfully",typeof $scope.data);
+			$scope.details = angular.fromJson($scope.data);
+			console.log("Data received successfully", $scope.details);
 		});
 	};
 
