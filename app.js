@@ -8,8 +8,10 @@
 
 	$scope.init = function init(){
 		//console.log("init() was called");
-		$scope.search = "Entrepreneur";
+		$scope.search = "Ambition";
 		$scope.validFlag = true;
+		$scope.definition = null;
+		$scope.showFlag = false;
 	}
 
 	$scope.validateInput = function validateInput(){
@@ -37,11 +39,31 @@
 			method: 'GET',
 			url: pearsonURL,
 		})
-		.success(function(response){
-			$scope.data = response.data;
-			$scope.details = angular.fromJson($scope.data);
-			console.log("Data received successfully", $scope.details);
+		//.success(function(response){
+		//	$scope.data = response.details;
+		//	$scope.details = angular.fromJson($scope.data);
+		//	console.log("Data received successfully", $scope.details);
+		//	console.log("Meaning: :", $scope.details[status]);
+		//});
+		.then(function successCallBack(response){
+			//console.log("Response received successfully: ",typeof response.data);
+			//console.log('Data received :', response.data.results);
+			$scope.data = response.data.results;
+			$scope.showResult($scope.data);
+			//console.log('definition :', $scope.definition);
+
+		}, function errorCallBack(response){
+			console.log("Response not received");
 		});
+
+		$scope.showResult = function(data){
+			console.log("showResult was called !");
+			$scope.exampleText = null;
+
+			console.log("Value of showFlag: ", $scope.showFlag);
+			return $scope.showFlag;
+		};
+
 	};
 
 	//function fetch(){
