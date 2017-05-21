@@ -13,6 +13,8 @@
 	<!--Angular framework -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script type="text/javascript" src="app.js"></script>
+	<!--Local Storage -->
+	<script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
 
 </head>
 <body id="page-top" class="body-custom" ng-app="dictionaryApp" ng-controller="dictionaryController" ng-init="init()">
@@ -68,6 +70,8 @@
 						-->
 						<label>Example:</label>
 						<p>{{word.example}}</p>
+
+						<p><button class="btn btn-md btn-warning">Save to WordList</button></p>
 					</div>
 				</div>
 			</div>

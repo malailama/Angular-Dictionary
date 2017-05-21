@@ -1,5 +1,5 @@
 (function(){
-	angular.module('dictionaryApp',[])
+	angular.module('dictionaryApp',['LocalStorageModule'])
 	.controller('dictionaryController', function($scope, $http){
 
 	//console.log("Controller was loaded succesfully");
