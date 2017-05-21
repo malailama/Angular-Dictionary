@@ -44,27 +44,40 @@
 			<div class="col-lg-2"></div>
 		</div>
 	</div>
-	<div class="container-fluid">
+	<div class="container-fluid" ng-repeat="word in wordArray" ng-show="showFlag">
 		<div class="row">
 			<div class="col-lg-1"></div>
 			<div class="col-lg-10">
 				<div class="panel panel-info">
-					<div class="panel-body panel-body-custom" ng-show="showFlag">
-						<label>Meaning:</label>
-						<p>{{definition}}</p>
+					<div class="panel-body panel-body-custom">
+						<label>Word:</label>
+						<p>{{word.headword}}</p>
 
+						<label>Meaning:</label>
+						<p>{{word.definition}}</p>
+
+						<!--
 						<label>Synonym:</label>
 						<p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor</p>
 
 						<label>Antonym:</label>
 						<p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor</p>
-
+						-->
 						<label>Example:</label>
-						<p>{{exampleText}}</p>
+						<p>{{word.example}}</p>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-1"></div>
+		</div>
+	</div>
+	<div class="container-fluid" ng-show="wordNotFound">
+		<div class="row">
+			<div class="col-lg-2"></div>
+			<div class="col-lg-8">
+				<p class="p-custom">{{errorMessage}}</p>
+			</div>
+			<div class="col-lg-2"></div>
 		</div>
 	</div>
 </body>
