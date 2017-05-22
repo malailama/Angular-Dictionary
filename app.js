@@ -8,15 +8,20 @@
 		"localStorageService",
 		function($scope, $http, localStorageService){
 
-			console.log("Controller was loaded succesfully");
+			//console.log("Controller was loaded succesfully");
 
 			//Input search term
 			$scope.search = null;
 			//Validity Flag for input search term
 			$scope.validFlag = false;
+			//Display Word information if definition is available
 			$scope.showFlag = true;
+			//Search Word not found flag
 			$scope.wordNotFound = false;
+			//Check for wordList
 			$scope.wordListEmptyFlag = true;
+			//String of headwords present in Word List
+			var headwordString = "";
 
 			//Arrays for Local Storage
 			var wordListJson = [];
@@ -51,6 +56,15 @@
 
 				return $scope.validFlag;
 			};
+
+			$scope.wordAlreadyExist = function wordAlreadyExist(){
+				var wordExistFlag = null;
+
+				//Compare the word in array with string of words in WordList and disable save button if word already exists
+				//Create the word list in add and splice the word list in 
+
+				return wordExistFlag;
+			}
 
 			$scope.searchApi = function searchApi(){
 				
@@ -136,46 +150,70 @@
 
 			$scope.getWordList =  function getWordList(){
 				//console.log("getWordList");
+				//var check ;
+				//console.log(check);
 
 				if(localStorageService.get("WordList")){
 					$scope.wordList = angular.fromJson(localStorageService.get("WordList"));
 					$scope.wordListEmptyFlag = false;
-					//console.log("Word List initialised")
+					headwordString = localStorageService.get("headwords");
+					console.log("Word List initialised")
+					//console.log(wordList);
 				}else{
 					$scope.wordList = [];
 					$scope.wordListEmptyFlag = true;
+					headwordString = "";
 					console.log("wordList initialized with null");
 				}
 			};
 
 			$scope.saveToWordList = function saveToWordList(word){
 
-				$scope.wordList.push({
-					'headword':word.headword,
-					'example':word.example,
-					'definition':word.definition
-				});
-				wordListJson = angular.toJson($scope.wordList);
-				localStorageService.set("WordList", wordListJson);
-
-				if($scope.wordList){
-					$scope.wordListEmptyFlag = false;
+				if(!$scope.wordList){
+					$scope.wordList = [{
+						'headword':word.headword,
+						'example':word.example,
+						'definition':word.definition
+					}];
+					headwordString = word.headword;
 				}else{
-					$scope.wordListEmptyFlag = true;
+					$scope.wordList.push({
+						'headword':word.headword,
+						'example':word.example,
+						'definition':word.definition,
+					});
+					headwordString = headwordString.concat(word.headword," ");
 				}
+				
+				$scope.setWordList();
 				//console.log(word.headword+" was added to wordlist");
 			};
 
 			$scope.setWordList = function setWordList(){
 				
-				$scope.wordListJson = angular.toJson($scope.wordList);
+				wordListJson = angular.toJson($scope.wordList);
 				localStorageService.set("WordList", wordListJson);
+				localStorageService.set("headwords", headwordString);
+				console.log(headwordString);
+				console.log($scope.wordList);
+
 			};
 
 			$scope.deleteFromWordList = function deleteFromWordList(id){
-				//console.log("delete list was called", id);
+				
+				//console.log("Index in headwordString", headwordString.indexOf($scope.wordList[id].headword));
+				var str = $scope.wordList[id].headword;
+				headwordString = headwordString.replace(str,"");
 				$scope.wordList.splice(id,1);
 				$scope.setWordList();
+
+
+				if(headwordString !== ""){
+					$scope.wordListEmptyFlag = false;
+				}else{
+					$scope.wordListEmptyFlag = true;
+				}
+				console.log("wordList Empty: ",$scope.wordListEmptyFlag);
 			};
 		}
 	]);
