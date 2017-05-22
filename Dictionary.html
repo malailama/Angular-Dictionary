@@ -11,10 +11,14 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>	
 	<!--Angular framework -->
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
 	<script type="text/javascript" src="app.js"></script>
 	<!--Local Storage -->
 	<script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+	<!--AngularUI Bootstrap -->
+	<script type="text/javascript" src="ui-bootstrap/ui-bootstrap-custom-2.5.0.min.js"></script>
+	<script type="text/javascript" src="ui-bootstrap/ui-bootstrap-custom-tpls-2.5.0.min.js"></script>
+	<link rel="stylesheet" href="ui-bootstrap/ui-bootstrap-custom-2.5.0-csp.css">
 
 </head>
 <body id="page-top" class="body-custom" ng-app="dictionaryApp" ng-controller="dictionaryController" ng-init="init()">
@@ -26,7 +30,7 @@
 			<a class="navbar-brand page-scroll" href="#page-top"><b>Dictionary</b></a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="#favwords"><span class="glyphicon glyphicon-education"></span> WordList</a></li>
+			<li><a ng-href="#" data-toggle="modal" data-target="#wordlist" ng-click="getWordList()"><span class="glyphicon glyphicon-education"></span> WordList</a></li>
 		</ul>
 	</div>	
 	</nav>
@@ -71,7 +75,7 @@
 						<label>Example:</label>
 						<p>{{word.example}}</p>
 
-						<p><button class="btn btn-md btn-warning">Save to WordList</button></p>
+						<p><button class="btn btn-md btn-warning" ng-click="saveToWordList(word)">Save to WordList</button></p>
 					</div>
 				</div>
 			</div>
@@ -86,6 +90,29 @@
 			</div>
 			<div class="col-lg-2"></div>
 		</div>
+	</div>
+	<!-- Word List Modal -->
+	<div id="wordlist" class="modal fade" role="dialog" ng-controller="modalController">
+	  <div class="modal-dialog">
+
+	    <!-- Modal content-->
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h3 class="modal-title">Word List</h3>
+	      </div>
+	      <div class="modal-body">
+	      	<div ng-repeat="storedWord in wordList">
+	      		<p >{{storedWord.headword}}<button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
+	      	</div>
+	        <p ng-show="wordListEmptyFlag">No words added to Word List. Go ahead, add a few.</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+
+	  </div>
 	</div>
 </body>
 </html>

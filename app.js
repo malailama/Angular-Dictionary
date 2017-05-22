@@ -1,18 +1,51 @@
 (function(){
-	angular.module('dictionaryApp',['LocalStorageModule'])
-	.controller('dictionaryController', function($scope, $http){
 
-	//console.log("Controller was loaded succesfully");
+	var dictionaryApp = angular.module('dictionaryApp', ['LocalStorageModule','ui.bootstrap']);
 
-	var base_url = "https://od-api.oxforddictionaries.com/api/v1";
+	dictionaryApp.controller('dictionaryController', [
+		"$scope", 
+		"$http", 
+		"localStorageService",
+	function($scope, $http, localStorageService){
 
+	console.log("Controller was loaded succesfully");
+
+	//Input search term
+	$scope.search = null;
+	//Validity Flag for input search term
+	$scope.validFlag = false;
+	$scope.showFlag = true;
+	$scope.wordNotFound = false;
+	$scope.wordListEmptyFlag = true;
+
+	//Arrays for Local Storage
+	var wordListJson = [];
+	$scope.wordList = [];
+
+	$scope.getWordList =  function getWordList(){
+		//console.log("getWordList");
+
+		if(localStorageService.get("WordList")){
+				$scope.wordList = angular.fromJson(localStorageService.get("WordList"));
+				$scope.wordListEmptyFlag = false;
+				//console.log("Word List initialised")
+			}else{
+				$scope.wordList = [];
+				$scope.wordListEmptyFlag = true;
+				console.log("wordList initialized with null");
+			}
+	};
+
+	//Intialising wordList
+	$scope.getWordList();
+
+	//Intialisation Function
 	$scope.init = function init(){
 		//console.log("init() was called");
-		$scope.search = null;
-		$scope.validFlag = false;
-		$scope.showFlag = true;
-		$scope.wordNotFound = false;
-	}
+		//console.log(typeof getWordList());
+		//$scope.getWordList();
+
+	};
 
 	$scope.validateInput = function validateInput(){
 		//console.log("validateInput was called");
@@ -30,7 +63,7 @@
 		}
 		else{
 			$scope.validFlag = true;
-			$scope.wordNotFound = false;
+			$scope.wordNotFound = true;
 		}
 		
 		//console.log("Value of validFlag: ",$scope.validFlag);
@@ -74,36 +107,36 @@
 				//Adding all the wordObjects to wordArray
 				for(var wordCount = 0; wordCount<data.total; wordCount++){
 					//Initialising Variables
-					$scope.wordObject = {};
-					$scope.word = null;
-					$scope.exampleText = null;
-					$scope.def = null;
+					var wordObject = {};
+					var word = null;
+					var exampleText = null;
+					var def = null;
 					//Fetch headword
-					$scope.word = data.results[wordCount].headword;
+					word = data.results[wordCount].headword;
 					//Fetch Definition
-					$scope.def = data.results[wordCount].senses[0].definition[0];
+					def = data.results[wordCount].senses[0].definition[0];
 					//Fetch example text
 					if(data.results[wordCount].senses[0].collocation_examples){
-						$scope.exampleText = data.results[wordCount].senses[0].collocation_examples[0].example.text;
+						exampleText = data.results[wordCount].senses[0].collocation_examples[0].example.text;
 					}
 					else if(data.results[wordCount].senses[0].gramatical_examples){
-						$scope.exampleText = data.results[wordCount].senses[0].gramatical_examples[0].examples[0].text;
+						exampleText = data.results[wordCount].senses[0].gramatical_examples[0].examples[0].text;
 					}
 					else if(data.results[wordCount].senses[0].examples){
-						$scope.exampleText = data.results[wordCount].senses[0].examples[0].text;
+						exampleText = data.results[wordCount].senses[0].examples[0].text;
 					}
 					else{
-						$scope.exampleText = "Sorry, no example available";
+						exampleText = "Sorry, no example available";
 					}
 					//Create wordObject
-					$scope.wordObject = {
-						'headword':$scope.word,
-						'definition':$scope.def,
-						'example':$scope.exampleText
+					wordObject = {
+						'headword':word,
+						'definition':def,
+						'example':exampleText
 					};
 					//Push word object in WordArray
 					//console.log($scope.wordObject.headword, $scope.wordObject.definition,$scope.wordObject.example);
-					$scope.wordArray.push($scope.wordObject);
+					$scope.wordArray.push(wordObject);
 					//console.log("wordArray length",$scope.wordArray.length);
 				}
 
@@ -121,7 +154,64 @@
 			return $scope.showFlag;
 		};
 
+		$scope.saveToWordList = function saveToWordList(word){
+
+			$scope.wordList.push({
+				'headword':word.headword,
+				'example':word.example,
+				'definition':word.definition
+			});
+			wordListJson = angular.toJson($scope.wordList);
+			localStorageService.set("WordList", wordListJson);
+
+			if($scope.wordList){
+				$scope.wordListEmptyFlag = false;
+			}else{
+				$scope.wordListEmptyFlag = true;
+			}
+			//console.log(word.headword+" was added to wordlist");
+		};
+
+		$scope.setWordList = function setWordList(){
+
+			$scope.wordListJson = angular.toJson($scope.wordList);
+			localStorageService.set("WordList", wordListJson);
+		};
+
+		$scope.deleteFromWordList = function deleteFromWordList(id){
+			console.log("delete list was called");
+			$scope.wordList.splice(id,1);
+			$scope.setWordList();
+		};
+
 	};
 
-	});
+	}]);
+
+	dictionaryApp.controller("modalController", [
+		"$uibModal",
+		"$document",
+		function($uibModal,$document){
+
+		//console.log("Modal controller has been loaded");
+		var $ctrl = this;
+
+		$ctrl.animationsEnabled = true;
+
+		$ctrl.open = function(size,parentSelector){
+			var parentElem = parentSelector ?
+				angular.element($document[0].querySelector('.modal'+parentSelector)) : undefined;
+
+			var modalInstance = $uibModal.open({
+				animation: $ctrl.animationsEnabled,
+				ariaLabelledBy: 'modal-title',
+				ariaLabelledBy: 'modal-body',
+				templateUrl: 'wordlist.html',
+				controller: 'ModalInstanceCtrl',
+				controllerAs: '$ctrl',
+				size: size,
+				appendTo: parentElem
+			});
+		}
+	}]);
 })();
