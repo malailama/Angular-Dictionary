@@ -15,10 +15,6 @@
 	<script type="text/javascript" src="app.js"></script>
 	<!--Local Storage -->
 	<script src="node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
-	<!--AngularUI Bootstrap -->
-	<script type="text/javascript" src="ui-bootstrap/ui-bootstrap-custom-2.5.0.min.js"></script>
-	<script type="text/javascript" src="ui-bootstrap/ui-bootstrap-custom-tpls-2.5.0.min.js"></script>
-	<link rel="stylesheet" href="ui-bootstrap/ui-bootstrap-custom-2.5.0-csp.css">
 
 </head>
 <body id="page-top" class="body-custom" ng-app="dictionaryApp" ng-controller="dictionaryController" ng-init="init()">
@@ -92,7 +88,7 @@
 		</div>
 	</div>
 	<!-- Word List Modal -->
-	<div id="wordlist" class="modal fade" role="dialog" ng-controller="modalController">
+	<div id="wordlist" class="modal fade" role="dialog">
 	  <div class="modal-dialog">
 
 	    <!-- Modal content-->
@@ -103,7 +99,7 @@
 	      </div>
 	      <div class="modal-body">
 	      	<div ng-repeat="storedWord in wordList">
-	      		<p >{{storedWord.headword}}<button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
+	      		<p >{{ $index + 1}}. {{storedWord.headword}} <button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
 	      	</div>
 	        <p ng-show="wordListEmptyFlag">No words added to Word List. Go ahead, add a few.</p>
 	      </div>
