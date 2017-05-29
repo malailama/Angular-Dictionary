@@ -71,7 +71,7 @@
 						<label>Example:</label>
 						<p>{{word.example}}</p>
 
-						<p><button class="btn btn-md btn-warning" ng-click="saveToWordList(word)">Save to WordList</button></p>
+						<p><button class="btn btn-md btn-warning" ng-disabled="wordAlreadyExist(word)" ng-click="saveToWordList(word)">Save to WordList</button></p>
 					</div>
 				</div>
 			</div>

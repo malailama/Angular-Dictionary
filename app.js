@@ -21,7 +21,7 @@
 			//Check for wordList
 			$scope.wordListEmptyFlag = true;
 			//String of headwords present in Word List
-			var headwordString = "";
+			var headwordString = [];
 
 			//Arrays for Local Storage
 			var wordListJson = [];
@@ -57,12 +57,21 @@
 				return $scope.validFlag;
 			};
 
-			$scope.wordAlreadyExist = function wordAlreadyExist(){
+			//Disable Save button if word already exists in WordList
+			$scope.wordAlreadyExist = function wordAlreadyExist(word){
+				//console.log("Word already exist was called");
 				var wordExistFlag = null;
 
-				//Compare the word in array with string of words in WordList and disable save button if word already exists
-				//Create the word list in add and splice the word list in 
+				//Stores the index of the word if it exist in WordList
+				var searchIndex = headwordString.search(word.headword);
 
+				if(searchIndex === -1){
+					wordExistFlag = false;
+				}else{
+					wordExistFlag = true;
+				}
+
+				//console.log("Word already exist: ", wordExistFlag);
 				return wordExistFlag;
 			}
 
