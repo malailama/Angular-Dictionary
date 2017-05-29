@@ -207,8 +207,8 @@
 				wordListJson = angular.toJson($scope.wordList);
 				localStorageService.set("WordList", wordListJson);
 				localStorageService.set("headwords", headwordString);
-				console.log(headwordString);
-				console.log($scope.wordList);
+				//console.log(headwordString);
+				//console.log($scope.wordList);
 
 			};
 

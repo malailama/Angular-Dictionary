@@ -108,13 +108,13 @@
 	        <h3 class="modal-title">Word List</h3>
 	      </div>
 	      <div class="modal-body">
-	      	<div ng-repeat="storedWord in wordList">
-	      		<p >{{ $index + 1}}. {{storedWord.headword}} <button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
-	      	</div>
-	        <p ng-show="wordListEmptyFlag">No words added to Word List. Go ahead, add a few.</p>
+		      	<div ng-repeat="storedWord in wordList">
+		      		<p >{{ $index + 1}}. {{storedWord.headword}} <button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
+		      	</div>
+		        <p ng-show="wordListEmptyFlag">No words added to Word List. Go ahead, add a few.</p>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	     		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	      </div>
 	    </div>
 
