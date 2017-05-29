@@ -33,6 +33,7 @@
 				$scope.getWordList();
 			};
 
+			//Check validity of searchbar input and enable Search button accordingly
 			$scope.validateInput = function validateInput(){
 				//console.log("validateInput was called");
 				$scope.showFlag = false;
@@ -49,7 +50,7 @@
 				}
 				else{
 					$scope.validFlag = true;
-					$scope.wordNotFound = true;
+					$scope.wordNotFound = false;
 				}
 				
 				//console.log("Value of validFlag: ",$scope.validFlag);
@@ -75,12 +76,14 @@
 				return wordExistFlag;
 			}
 
+			//Fetches result from Dictionary API
 			$scope.searchApi = function searchApi(){
 				
 				//console.log("SearchAPI was called");
-
-				var merriamURL = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/'+$scope.search+'?key=1743f7d3-3c20-426e-9b9a-d27c25c0806d';
+				//var merriamURL = 'http://www.dictionaryapi.com/api/v1/references/collegiate/xml/'+$scope.search+'?key=1743f7d3-3c20-426e-9b9a-d27c25c0806d';
+				
 				var pearsonURL = 'https://api.pearson.com/v2/dictionaries/ldoce5/entries?headword='+$scope.search+'&apikey=4W4QfkL0w0RDEkQyEQo2GBIEJnwGeGiZ';
+				$scope.loadingFlag = true;
 
 				$http({
 					method: 'GET',
@@ -91,6 +94,7 @@
 					$scope.dataDump = response.data;
 					$scope.data = angular.fromJson($scope.dataDump);
 					$scope.showResult($scope.data);
+					$scope.loadingFlag = false;
 					//console.log('definition :', $scope.definition);
 
 				}, function errorCallBack(response){
@@ -166,7 +170,7 @@
 					$scope.wordList = angular.fromJson(localStorageService.get("WordList"));
 					$scope.wordListEmptyFlag = false;
 					headwordString = localStorageService.get("headwords");
-					console.log("Word List initialised")
+					//console.log("Word List initialised")
 					//console.log(wordList);
 				}else{
 					$scope.wordList = [];
