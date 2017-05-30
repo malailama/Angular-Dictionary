@@ -39,6 +39,7 @@
 				$scope.showFlag = false;
 				//Hides the wrod lsit result
 				$scope.wfwl = false;
+
 				var searchTerms = $scope.search.split(" ");
 
 				if($scope.search === undefined || $scope.search === '' || $scope.search === null){
@@ -167,6 +168,7 @@
 				//console.log("getWordList");
 				//var check ;
 				//console.log(check);
+				$scope.wordNotFound = false;
 
 				if(localStorageService.get("WordList")){
 					$scope.wordList = angular.fromJson(localStorageService.get("WordList"));
@@ -199,7 +201,7 @@
 					});
 					headwordString = headwordString.concat(word.headword," ");
 				}
-				
+
 				$scope.setWordList();
 				//console.log(word.headword+" was added to wordlist");
 			};
@@ -217,6 +219,9 @@
 			$scope.deleteFromWordList = function deleteFromWordList(id){
 				
 				//console.log("Index in headwordString", headwordString.indexOf($scope.wordList[id].headword));
+				$scope.wfwl = false;
+				$scope.wordNotFound = false;
+				
 				var str = $scope.wordList[id].headword;
 				headwordString = headwordString.replace(str,"");
 				$scope.wordList.splice(id,1);
@@ -228,12 +233,14 @@
 				}else{
 					$scope.wordListEmptyFlag = true;
 				}
-				console.log("wordList Empty: ",$scope.wordListEmptyFlag);
+				//console.log("wordList Empty: ",$scope.wordListEmptyFlag);
 			};
 
 			//Populate the word object to show a word from WordList
 			$scope.showWordFromWordList = function showWordFromWordList(id){
 				//console.log("showWordFromWordList was called with id ", id);
+				$scope.wordNotFound = false;
+
 				$scope.wordFromWordList = [{
 					headword:'',
 					definition:'',
