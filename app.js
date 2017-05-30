@@ -37,6 +37,8 @@
 			$scope.validateInput = function validateInput(){
 				//console.log("validateInput was called");
 				$scope.showFlag = false;
+				//Hides the wrod lsit result
+				$scope.wfwl = false;
 				var searchTerms = $scope.search.split(" ");
 
 				if($scope.search === undefined || $scope.search === '' || $scope.search === null){
@@ -228,6 +230,29 @@
 				}
 				console.log("wordList Empty: ",$scope.wordListEmptyFlag);
 			};
+
+			//Populate the word object to show a word from WordList
+			$scope.showWordFromWordList = function showWordFromWordList(id){
+				//console.log("showWordFromWordList was called with id ", id);
+				$scope.wordFromWordList = [{
+					headword:'',
+					definition:'',
+					example:''
+				}];
+				$scope.wfwl = false;
+				//hides the search bar result
+				$scope.showFlag = false;
+				$scope.search = null;
+				
+				if(id !== null){
+					$scope.wordFromWordList.headword = $scope.wordList[id].headword;
+					$scope.wordFromWordList.definition = $scope.wordList[id].definition;
+					$scope.wordFromWordList.example = $scope.wordList[id].example;
+					$scope.wfwl = true;
+				}else{
+					$scope.wfwl = false;
+				}
+			}
 		}
 	]);
 })();
