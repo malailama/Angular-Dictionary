@@ -109,7 +109,7 @@
 	      </div>
 	      <div class="modal-body">
 		      	<div ng-repeat="storedWord in wordList">
-		      		<p >{{ $index + 1}}. {{storedWord.headword}} <button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> </p>
+		      		<p >{{ $index + 1}}. {{storedWord.headword}} <button class="btn btn-danger glyphicon glyphicon-trash button-custom" ng-click="deleteFromWordList($index)"></button> <button class="btn btn-primary glyphicon glyphicon-book button-custom" ng-click="deleteFromWordList($index)"></button></p>
 		      	</div>
 		        <p ng-show="wordListEmptyFlag">No words added to Word List. Go ahead, add a few.</p>
 	      </div>
